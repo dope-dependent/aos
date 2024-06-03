@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  c: 
+    build: 
+      dockerfile: ./client/Dockerfile
+      context: .
+    command: python3 client.py
+    depends_on:
+      - s
+    
+  s:
+    privileged: true
+    volumes:
+      - ./server:/server
+    build:
+      dockerfile: ./server/Dockerfile.lb
+      context: .
+    command: sh /server/start.sh 1
+    tty: true
+    stdin_open: true 

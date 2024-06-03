@@ -1,0 +1,11 @@
+FROM ubuntu:jammy
+RUN apt-get update
+RUN apt-get install -y clang llvm libelf-dev libpcap-dev build-essential make 
+RUN apt-get install -y linux-tools-common gcc-multilib linux-tools-generic git zlib1g zlib1g-dev
+RUN git clone --recurse-submodules https://github.com/libbpf/bpftool.git && cd bpftool/src && make install
+RUN apt-get install -y iproute2 sudo python3
+
+RUN mount -t debugfs
+# COPY ./server_active/* /
+# RUN sudo make
+# RUN sudo make user

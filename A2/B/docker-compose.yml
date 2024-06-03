@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+  c: 
+    build: 
+      dockerfile: ./client/Dockerfile
+      context: .
+    command: python3 client.py
+    depends_on:
+      - lb
+    
+  s1:
+    build: 
+      dockerfile: ./server/Dockerfile
+      context: .
+    command: python3 server.py
+    depends_on:
+      - lb
+  
+  s2:
+    build: 
+      dockerfile: ./server/Dockerfile
+      context: .
+    command: python3 server.py
+    depends_on:
+      - lb
+
+  s3:
+    build: 
+      dockerfile: ./server/Dockerfile
+      context: .
+    command: python3 server.py
+    depends_on:
+      - lb
+
+  lb:
+    privileged: true
+    volumes:
+      - ./lb:/lb
+    build:
+      dockerfile: ./lb/Dockerfile.lb
+      context: .
+    command: sh /lb/start.sh
+    tty: true
+    stdin_open: true
